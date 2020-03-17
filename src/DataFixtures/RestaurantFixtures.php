@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class RestaurantFixtures extends Fixture
@@ -13,5 +14,12 @@ class RestaurantFixtures extends Fixture
         // $manager->persist($product);
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return array(
+            CityFixtures::class,
+        );
     }
 }
