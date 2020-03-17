@@ -11,6 +11,9 @@ class CityFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+
+        $faker = Factory::create('fr_FR');
+
         for ($i = 0; $i < 1000; $i++) {
             $city = new City();
             $city->setName("Lyon");
