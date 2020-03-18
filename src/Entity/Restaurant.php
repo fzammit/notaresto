@@ -34,7 +34,7 @@ class Restaurant
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\city", inversedBy="restaurants")
+     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="restaurants")
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;
@@ -169,5 +169,18 @@ class Restaurant
         }
 
         return $this;
+    }
+
+    public function getAverageRating(): float
+    {
+        $sum = 0;
+        $total = 0;
+
+        foreach($this->getReviews() as $review) {
+            $sum += $review->getRating();
+            $total++;
+        }
+
+        return $sum/$total;
     }
 }

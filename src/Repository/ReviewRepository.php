@@ -19,10 +19,9 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
-    // /**
-    //  * @return Review[] Returns an array of Review objects
-    //  */
-    /*
+    /**
+    * @return Review[] Returns an array of Review objects
+    */
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('r')
@@ -34,7 +33,6 @@ class ReviewRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Review
