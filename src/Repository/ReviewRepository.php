@@ -37,7 +37,7 @@ class ReviewRepository extends ServiceEntityRepository
     public function findBestTenRatings() {
 
         return $this->createQueryBuilder('r')
-        ->select('AVG(r.rating) as average', 'restaurant.id as restaurantId')
+        ->select('restaurant.id as restaurantId')
         ->innerJoin('r.restaurant', 'restaurant')
         ->groupBy('restaurant')
         ->orderBy('AVG(r.rating)', 'DESC')
