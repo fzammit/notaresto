@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Restaurant;
 use App\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
@@ -42,4 +43,12 @@ class AppController extends AbstractController
             'restaurants' => $tenBestRestaurants,
         ]);
     }
+
+    /**
+* @Route("/search", name="app_search", methods={"GET"})
+* @param Request $request
+*/
+public function search(Request $request) {
+
+}
 }
