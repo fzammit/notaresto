@@ -29,7 +29,7 @@ class City
     private $zipcode;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Restaurant", mappedBy="city", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Restaurant", mappedBy="City", orphanRemoval=true)
      */
     private $restaurants;
 
