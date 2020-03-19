@@ -14,8 +14,11 @@ class RestaurantController extends AbstractController
      */
     public function index()
     {
+
+        $restaurants = $this->getDoctrine()->getRepository(Restaurant::class)->findAll();
+
         return $this->render('restaurant/index.html.twig', [
-            'controller_name' => 'RestaurantController',
+            'restaurants' => $restaurants,
         ]);
     }
     /**
@@ -33,6 +36,7 @@ class RestaurantController extends AbstractController
      */
     public function new()
     {
+        return $this->render('restaurants/form.html.twig');
     }
 
     /**
