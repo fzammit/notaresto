@@ -15,37 +15,44 @@ class Restaurant
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * 
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="restaurants")
      * @ORM\JoinColumn(nullable=false)
+     * 
      */
     private $city;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\RestaurantPicture", mappedBy="restaurant", orphanRemoval=true)
+     * 
      */
     private $restaurantPictures;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="restaurant", orphanRemoval=true)
+     * 
      */
     private $reviews;
 
