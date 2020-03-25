@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Restaurant;
+use App\Form\RestaurantType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RestaurantController extends AbstractController
@@ -31,12 +33,31 @@ class RestaurantController extends AbstractController
     }
 
     /**
-     * Affiche le formulaire de création de restaurant
-     * @Route("/restaurant/new", name="restaurant_new", methods={"GET"})
+     * Affiche et gère le formulaire de création de restaurant
+     * @Route("/restaurant/new", name="restaurant_new", methods={"GET", "POST"})
      */
-    public function new()
+    public function new(Request $request)
     {
-        return $this->render('restaurants/form.html.twig');
+        $restaurant = new Restaurant();
+
+        $form = $this->createForm(RestaurantType::class, $restaurant);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $restaurant = $form->getData();
+            $restaurant->setUser($this->getUser());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($restaurant);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('restaurant_index');
+        }
+
+        return $this->render('restaurant/form.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**

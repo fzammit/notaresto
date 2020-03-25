@@ -30,13 +30,13 @@ class ApiRestaurantController extends AbstractController
     }
 
     /**
-     * @Route("/api/restaurant", name="api_restaurant", methods={"GET"})
+     * @Route("/api/restaurants", name="api_restaurant", methods={"GET"})
      */
     public function index()
     {
         $restaurants = $this->getDoctrine()->getRepository(Restaurant::class)->findAll();
 
-        $data = $this->serializer->normalize($restaurants, null, ['groups' => 'al_restaurants']);
+        $data = $this->serializer->normalize($restaurants, null, ['groups' => 'all_restaurants']);
 
         $jsonContent = $this->serializer->serialize($data, 'json');
 
@@ -53,28 +53,17 @@ class ApiRestaurantController extends AbstractController
     {
 
         /**
-         * On lit les données de la requête :
-         */
-        dump($request->request);
-
-        /**
-         * Pour lire un champ de la requête, parmi les champs donnés dans Postman (ici, le
-         * champ 'name' par exemple)
-         */
-        dd($request->request->get('name'));
-
-        /**
          * On créée un restaurant en prenant les données de la requête
          */
         $restaurant = new Restaurant;
-        $restaurant->setName('Nouveau resto');
-        $restaurant->setDescription('Une description !');
+        $restaurant->setName($request->request->get('name'));
+        $restaurant->setDescription($request->request->get('description'));
 
         /**
          * On récupère les users 1 et city 1 (car l'objet Restaurant s'attend à des objets)
          */
-        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
-        $city = $this->getDoctrine()->getRepository(City::class)->find(1);
+        $user = $this->getDoctrine()->getRepository(User::class)->find($request->request->get('user_id'));
+        $city = $this->getDoctrine()->getRepository(City::class)->find($request->request->get('city_id'));
 
         $restaurant->setUser($user);
         $restaurant->setCity($city);
@@ -85,5 +74,39 @@ class ApiRestaurantController extends AbstractController
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($restaurant);
         $manager->flush();
+
+        /**
+         * On retourne un code 201
+         */
+        return new Response(null, 201);
+    }
+
+    /**
+     * @Route("api/restaurants/{restaurant}/edit", name="api_restaurant_patch", methods={"POST"})
+     */
+    public function update(Request $request, Restaurant $restaurant)
+    {
+
+        if (!empty($request->request->get('name'))) {
+            dd($request);
+            $restaurant->setName($request->request->get('name'));
+        }
+
+        if (!empty($request->request->get('description'))) {
+            $restaurant->setDescription($request->request->get('description'));
+        }
+
+        if (!empty($request->request->get('city_id'))) {
+            $restaurant->setCity($this->getDoctrine()->getRepository(City::class)->find($request->request->get('city_id')));
+        }
+
+        if (!empty($request->request->get('user_id'))) {
+            $restaurant->setUser($this->getDoctrine()->getRepository(User::class)->find($request->request->get('user_id')));
+        }
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->flush();
+
+        return new Response(null, 202);
     }
 }

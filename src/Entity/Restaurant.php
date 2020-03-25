@@ -17,43 +17,46 @@ class Restaurant
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      * @Groups("all_restaurants")
+     * @Groups("all_users")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("all_restaurants")
+     * @Groups("all_users")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Groups("all_restaurants")
+     * @Groups("all_users")
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("all_restaurants")
+     * 
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="restaurants")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("all_restaurants")
+     * 
      */
     private $city;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RestaurantPicture", mappedBy="restaurant", orphanRemoval=true)
-     * @Groups("all_restaurants")
+     * @ORM\OneToMany(targetEntity="App\Entity\RestaurantPicture", mappedBy="restaurant", cascade={"all"}, orphanRemoval=true)
+     * 
      */
     private $restaurantPictures;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="restaurant", orphanRemoval=true)
-     * @Groups("all_restaurants")
+     * 
      */
     private $reviews;
 
@@ -184,11 +187,21 @@ class Restaurant
         $sum = 0;
         $total = 0;
 
-        foreach($this->getReviews() as $review) {
+        foreach ($this->getReviews() as $review) {
             $sum += $review->getRating();
             $total++;
         }
 
-        return $sum/$total;
+        return $sum / $total;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
     }
 }

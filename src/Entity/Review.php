@@ -24,10 +24,9 @@ class Review
     private $message;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $rating;
-
     /**
      * @ORM\Column(type="datetime")
      */
@@ -45,7 +44,7 @@ class Review
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="parent", cascade={"all"})
      */
     private $childs;
 
